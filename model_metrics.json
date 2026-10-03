@@ -1,0 +1,7 @@
+{
+  "n_samples": 67355,
+  "n_real": 11079,
+  "n_fake": 56276,
+  "test_accuracy": 0.9734243931408211,
+  "balanced_accuracy": 0.9534719627217426
+}

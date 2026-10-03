@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VoxArgus Backend Test</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 480px; margin: 60px auto; padding: 20px; }
+  h2 { color: #333; }
+  input[type="file"] { margin: 20px 0; }
+  button { padding: 10px 20px; background: #4a4ae0; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; }
+  button:disabled { background: #aaa; }
+  #result { margin-top: 24px; padding: 16px; border-radius: 8px; font-size: 16px; white-space: pre-wrap; }
+  .real { background: #e6f9ec; color: #1a7a3c; border: 1px solid #1a7a3c; }
+  .fake { background: #fdeaea; color: #b32020; border: 1px solid #b32020; }
+  .error { background: #fff3cd; color: #856404; border: 1px solid #856404; }
+</style>
+</head>
+<body>
+
+<h2>VoxArgus Backend Test</h2>
+<p>Select an audio file (.wav / .mp3) and click Test to send it to the local Flask backend.</p>
+
+<input type="file" id="audioFile" accept="audio/*"><br>
+<button id="testBtn" onclick="testBackend()">Test Backend</button>
+
+<div id="result"></div>
+
+<script>
+async function testBackend() {
+  const fileInput = document.getElementById('audioFile');
+  const resultDiv = document.getElementById('result');
+  const btn = document.getElementById('testBtn');
+
+  if (!fileInput.files.length) {
+    resultDiv.className = 'error';
+    resultDiv.textContent = 'Please choose an audio file first.';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('audio', fileInput.files[0]);
+
+  btn.disabled = true;
+  resultDiv.className = '';
+  resultDiv.textContent = 'Sending to backend... please wait.';
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/predict', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      resultDiv.className = 'error';
+      resultDiv.textContent = 'Error: ' + JSON.stringify(data, null, 2);
+    } else {
+      resultDiv.className = data.label === 'FAKE' ? 'fake' : 'real';
+      resultDiv.textContent =
+        'Label: ' + data.label + '\n' +
+        'Real %: ' + data.real_percent + '\n' +
+        'Fake %: ' + data.fake_percent;
+    }
+  } catch (err) {
+    resultDiv.className = 'error';
+    resultDiv.textContent = 'Could not reach backend. Is app.py/predict_api.py still running?\n\n' + err;
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>

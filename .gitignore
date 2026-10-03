@@ -1,0 +1,27 @@
+# voice sample folders
+En fake/
+En real/
+bn fake/
+bn real/
+hi fake/
+hi real/
+mr fake/
+mr real/
+ta fake/
+ta real/
+pn real/
+te real/
+dataset/
+
+# audio files (keep the one small test file)
+*.wav
+*.flac
+*.ogg
+*.m4a
+*.mp3
+!test.mp3
+
+# local junk
+__pycache__/
+detections.db
+.env
