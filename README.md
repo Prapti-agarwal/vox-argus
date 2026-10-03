@@ -11,15 +11,6 @@ Vox Argus lets you upload or record a voice clip and tells you whether it is a *
 https://github.com/user-attachments/assets/45cae4c4-23da-4faf-a397-d032a33dae64
 
 
-
-| Setup | Permissions |
-
-| ![Setup](screenshots/01-setup.png) | ![Permissions](screenshots/02-permissions.png) |
-
-| Check a call | Result |
-
-| ![Check a call](screenshots/03-check-a-call.png) | ![Result](screenshots/04-result.png) |
-
 ## Features
 
 - Classifies audio as **REAL** or **FAKE** with confidence percentages
